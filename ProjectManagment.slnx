@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="ProjectManagment.Tests/ProjectManagment.Tests.csproj" Id="ceb94791-c7a0-4e35-bbf7-82fb1469d0a6" />
   <Project Path="ProjectManagment/ProjectManagment.csproj" />
 </Solution>

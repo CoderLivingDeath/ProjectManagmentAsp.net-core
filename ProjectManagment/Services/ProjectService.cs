@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace ProjectManagment.Services
 {
-    public class ProjectService
+    public class ProjectService : IProjectService
     {
         private readonly IRepository<Project> _projectRepository;
         private readonly IRepository<Company> _companyRepository;
@@ -22,6 +22,8 @@ namespace ProjectManagment.Services
         {
             try
             {
+                if(data.StartDate > data.EndDate) return OperationResult<Guid>.Fail("The end date is greater than the start date.");
+
                 var CustomerEnter = await _companyRepository.GetByIdAsync(data.CustomerCompanyId);
 
                 if (CustomerEnter == null) return OperationResult<Guid>.Fail("Client does not exist.");

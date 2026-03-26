@@ -2,7 +2,6 @@
 using ProjectManagment.DTO;
 using ProjectManagment.Infrastructure;
 using ProjectManagment.Interfaces;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace ProjectManagment.Services
@@ -18,7 +17,7 @@ namespace ProjectManagment.Services
             _companyRepository = companyRepository;
         }
 
-        public async Task<OperationResult<Guid>> CreateProject(ProjectCreateRequest data)
+        public async Task<OperationResult<Guid>> CreateProjectAsync(ProjectCreateRequest data)
         {
             try
             {
@@ -44,7 +43,7 @@ namespace ProjectManagment.Services
             }
         }
 
-        public async Task<OperationResult<IEnumerable<Project>>> GetProjectsByFilter(Expression<Func<Project, bool>> filter)
+        public async Task<OperationResult<IEnumerable<Project>>> GetProjectsByFilterAsync(Expression<Func<Project, bool>> filter)
         {
             try
             {
@@ -55,6 +54,84 @@ namespace ProjectManagment.Services
             catch (Exception ex)
             {
                 return OperationResult<IEnumerable<Project>>.FromException(ex, "Failed to retrieve projects.");
+            }
+        }
+
+        public async Task<OperationResult<IEnumerable<Project>>> GetProjectsByStartDateAsync(DateOnly startDate, DateOnly? endDate = null)
+        {
+            try
+            {
+                Expression<Func<Project, bool>> filter;
+                if (endDate.HasValue)
+                {
+                    filter = p => p.StartDate >= startDate && p.StartDate <= endDate.Value;
+                }
+                else
+                {
+                    filter = p => p.StartDate == startDate;
+                }
+
+                var projects = await _projectRepository.FindAsync(filter);
+                return OperationResult<IEnumerable<Project>>.Ok(projects);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<IEnumerable<Project>>.FromException(ex, "Failed to retrieve projects by start date.");
+            }
+        }
+
+        public async Task<OperationResult<IEnumerable<Project>>> GetProjectsByPriorityAsync(int priority)
+        {
+            try
+            {
+                var projects = await _projectRepository.FindAsync(p => p.Priority == priority);
+                return OperationResult<IEnumerable<Project>>.Ok(projects);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<IEnumerable<Project>>.FromException(ex, "Failed to retrieve projects by priority.");
+            }
+        }
+
+        public async Task<OperationResult<IEnumerable<Project>>> GetProjectsSortedByNameAsync()
+        {
+            try
+            {
+                var projects = await _projectRepository.GetAllAsync();
+                var sorted = projects.OrderBy(p => p.Name);
+                return OperationResult<IEnumerable<Project>>.Ok(sorted);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<IEnumerable<Project>>.FromException(ex, "Failed to sort projects by name.");
+            }
+        }
+
+        public async Task<OperationResult<IEnumerable<Project>>> GetProjectsSortedByStartDateAsync()
+        {
+            try
+            {
+                var projects = await _projectRepository.GetAllAsync();
+                var sorted = projects.OrderBy(p => p.StartDate);
+                return OperationResult<IEnumerable<Project>>.Ok(sorted);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<IEnumerable<Project>>.FromException(ex, "Failed to sort projects by start date.");
+            }
+        }
+
+        public async Task<OperationResult<IEnumerable<Project>>> GetProjectsSortedByPriorityAsync()
+        {
+            try
+            {
+                var projects = await _projectRepository.GetAllAsync();
+                var sorted = projects.OrderBy(p => p.Priority);
+                return OperationResult<IEnumerable<Project>>.Ok(sorted);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<IEnumerable<Project>>.FromException(ex, "Failed to sort projects by priority.");
             }
         }
     }

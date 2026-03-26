@@ -48,7 +48,7 @@ namespace ProjectManagment.Tests
             _projectRepositoryMock.Setup(r => r.AddAsync(It.IsAny<Project>())).ReturnsAsync(createdProject);
 
             // Act
-            var result = await _projectService.CreateProject(request);
+            var result = await _projectService.CreateProjectAsync(request);
 
             // Assert
             result.Success.Should().BeTrue();
@@ -83,7 +83,7 @@ namespace ProjectManagment.Tests
             _companyRepositoryMock.Setup(r => r.GetByIdAsync(executerId)).ReturnsAsync(executerCompany);
 
             // Act
-            var result = await _projectService.CreateProject(request);
+            var result = await _projectService.CreateProjectAsync(request);
 
             // Assert
             result.Success.Should().BeFalse();
@@ -113,7 +113,7 @@ namespace ProjectManagment.Tests
             _companyRepositoryMock.Setup(r => r.GetByIdAsync(executerId)).ReturnsAsync((Company?)null);
 
             // Act
-            var result = await _projectService.CreateProject(request);
+            var result = await _projectService.CreateProjectAsync(request);
 
             // Assert
             result.Success.Should().BeFalse();
@@ -143,7 +143,7 @@ namespace ProjectManagment.Tests
             _companyRepositoryMock.Setup(r => r.GetByIdAsync(executerId)).ReturnsAsync(executerCompany);
 
             // Act
-            var result = await _projectService.CreateProject(request);
+            var result = await _projectService.CreateProjectAsync(request);
 
             // Assert
             result.Success.Should().BeFalse();

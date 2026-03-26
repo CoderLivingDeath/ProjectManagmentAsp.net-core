@@ -7,7 +7,7 @@ namespace ProjectManagment.Interfaces
 {
     public interface IProjectService
     {
-        Task<OperationResult<Guid>> CreateProject(ProjectCreateRequest data);
-        Task<OperationResult<IEnumerable<Project>>> GetProjectsByFilter(Expression<Func<Project, bool>> filter);
+        Task<OperationResult<Guid>> CreateProjectAsync(ProjectCreateRequest data);
+        Task<OperationResult<IEnumerable<Project>>> GetProjectsByFilterAsync(Expression<Func<Project, bool>> filter);
     }
 }

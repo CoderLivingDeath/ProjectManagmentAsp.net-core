@@ -21,9 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Infrastructure\UOF\" />
     <Folder Include="Models\" />
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

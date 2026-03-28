@@ -1,4 +1,4 @@
-﻿using ProjectManagment.Data.Entity;
+using ProjectManagment.Data.Entity;
 using ProjectManagment.DTO;
 using ProjectManagment.Infrastructure;
 using ProjectManagment.Interfaces;
@@ -6,6 +6,9 @@ using System.Linq.Expressions;
 
 namespace ProjectManagment.Services
 {
+    /// <summary>
+    /// Service for managing project-related operations.
+    /// </summary>
     public class ProjectService : IProjectService
     {
         private readonly IRepository<Project> _projectRepository;
@@ -17,6 +20,12 @@ namespace ProjectManagment.Services
             _companyRepository = companyRepository;
         }
 
+        /// <summary>
+        /// Creates a new project with the specified data.
+        /// Validates that start date is not after end date and that both companies exist.
+        /// </summary>
+        /// <param name="data">The project creation request containing project details.</param>
+        /// <returns>An operation result containing the created project ID on success.</returns>
         public async Task<OperationResult<Guid>> CreateProjectAsync(ProjectCreateRequest data)
         {
             try
@@ -43,6 +52,11 @@ namespace ProjectManagment.Services
             }
         }
 
+        /// <summary>
+        /// Retrieves all projects that match the specified filter.
+        /// </summary>
+        /// <param name="filter">A function to test each project for a condition.</param>
+        /// <returns>An operation result containing matching projects.</returns>
         public async Task<OperationResult<IEnumerable<Project>>> GetProjectsByFilterAsync(Expression<Func<Project, bool>> filter)
         {
             try
@@ -57,6 +71,12 @@ namespace ProjectManagment.Services
             }
         }
 
+        /// <summary>
+        /// Retrieves projects with start date within the specified range.
+        /// </summary>
+        /// <param name="startDate">The start date of the range.</param>
+        /// <param name="endDate">The optional end date of the range. If not provided, returns only projects starting on the exact start date.</param>
+        /// <returns>An operation result containing matching projects.</returns>
         public async Task<OperationResult<IEnumerable<Project>>> GetProjectsByStartDateAsync(DateOnly startDate, DateOnly? endDate = null)
         {
             try
@@ -80,6 +100,11 @@ namespace ProjectManagment.Services
             }
         }
 
+        /// <summary>
+        /// Retrieves all projects with the specified priority.
+        /// </summary>
+        /// <param name="priority">The priority value to filter by.</param>
+        /// <returns>An operation result containing matching projects.</returns>
         public async Task<OperationResult<IEnumerable<Project>>> GetProjectsByPriorityAsync(int priority)
         {
             try
@@ -93,6 +118,10 @@ namespace ProjectManagment.Services
             }
         }
 
+        /// <summary>
+        /// Retrieves all projects sorted by name in ascending order.
+        /// </summary>
+        /// <returns>An operation result containing all projects sorted by name.</returns>
         public async Task<OperationResult<IEnumerable<Project>>> GetProjectsSortedByNameAsync()
         {
             try
@@ -107,6 +136,10 @@ namespace ProjectManagment.Services
             }
         }
 
+        /// <summary>
+        /// Retrieves all projects sorted by start date in ascending order.
+        /// </summary>
+        /// <returns>An operation result containing all projects sorted by start date.</returns>
         public async Task<OperationResult<IEnumerable<Project>>> GetProjectsSortedByStartDateAsync()
         {
             try
@@ -121,6 +154,10 @@ namespace ProjectManagment.Services
             }
         }
 
+        /// <summary>
+        /// Retrieves all projects sorted by priority in ascending order.
+        /// </summary>
+        /// <returns>An operation result containing all projects sorted by priority.</returns>
         public async Task<OperationResult<IEnumerable<Project>>> GetProjectsSortedByPriorityAsync()
         {
             try
